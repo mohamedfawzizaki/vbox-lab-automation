@@ -1,0 +1,41 @@
+# configs/network_config.yaml
+
+networks:
+  host_only:
+    name: vboxnet99
+    base_ip: 192.168.99.0
+    netmask: 255.255.255.0
+    dhcp: false
+    enabled: true
+    vms:
+      - ubuntu-server-for-laravel
+      - ubuntu-server-for-mysql
+
+  nat:
+    name: natnet99
+    base_ip: 10.0.99.0/24
+    dhcp: true
+    enabled: true
+    vms:
+      - ubuntu-server-for-nginx
+
+  internal:
+    name: intnet99
+    base_ip: 172.16.99.0
+    netmask: 255.255.0.0
+    dhcp: false
+    enabled: true
+    vms: 
+      - ubuntu-server-for-mysql
+
+  bridged:
+    name: bridged99
+    interface: eth0
+    base_ip: 172.16.99.0
+    dhcp: false
+    enabled: true
+    vms: 
+      - ubuntu-server-for-nginx    
+
+variables:
+  NET_ID: 99  

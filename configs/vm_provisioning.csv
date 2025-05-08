@@ -1,0 +1,9 @@
+# configs/vm_provisioning.csv
+ubuntu-server-for-nginx,192.168.99.2,nginx
+ubuntu-server-for-laravel,192.168.99.2,laravel
+ubuntu-server-for-mysql,192.168.99.3,mysql
+
+
+
+
+# sed -i 's/\r$//' "configs/vm_provisioning.csv"

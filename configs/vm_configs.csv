@@ -1,0 +1,12 @@
+# VM specs (name, Ostype, RAM, CPUs, Storage, etc.)
+
+# for mysql 'internal'
+ubuntu-server-for-mysql,Ubuntu_64,4096,4,30720
+# for laravel 'internal'
+ubuntu-server-for-laravel,Ubuntu_64,2048,2,20480
+# for nginx 'internal and nat'
+ubuntu-server-for-nginx,Ubuntu_64,3072,2,25600
+
+
+
+# sed -i 's/\r$//' "configs/vm_configs.csv"

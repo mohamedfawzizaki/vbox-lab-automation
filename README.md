@@ -1,4 +1,4 @@
-VirtualBox Lab Automation Suite
+VirtualBox Lab Automation Suite (VirtualBox - Bash Script - YAML)
 
 Automated provisioning of complex virtual environments with multi-network support
 

@@ -1,6 +1,5 @@
 VirtualBox Lab Automation Suite
 
-![Project Banner](https://i.imgur.com/rymE6OF.png)  
 Automated provisioning of complex virtual environments with multi-network support
 
 📜 Table of Contents

@@ -149,10 +149,6 @@ ssh dev@192.168.99.10 -p 2222
 4. Push to branch (`git push origin feature/improvement`)  
 5. Open a Pull Request  
 
-## 📄 License
-MIT License - Copyright (c) 2025 [Mohamed Fawzi Zaki]
-```
-
 ## 📧 Contact
 
 Mohamed Fawzi Zaki - mohamedfawzizaki@gmail.com

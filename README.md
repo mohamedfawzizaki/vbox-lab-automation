@@ -1,74 +1,63 @@
-VirtualBox Lab Automation Suite (VirtualBox - Bash Script - YAML)
+```markdown
+# 🖥️ VirtualBox Lab Automation Suite (VirtualBox - Bash Script - YAML)
+**Automated provisioning of complex virtual environments with multi-network support**  
 
-Automated provisioning of complex virtual environments with multi-network support
+## 📜 Table of Contents
+- [✨ Key Features](#-key-features)
+- [🏗️ Project Structure](#️-project-structure)
+- [⚙️ Prerequisites](#️-prerequisites)
+- [🚀 Quick Start](#-quick-start)
+- [🔧 Configuration](#-configuration)
+- [📜 Script Reference](#-script-reference)
+- [🚨 Troubleshooting](#-troubleshooting)
+- [🧩 Example Use Cases](#-example-use-cases)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-📜 Table of Contents
+## ✨ Key Features
 
-- [Features](-features)
-- [Project Structure](-project-structure)
-- [Prerequisites](-prerequisites)
-- [Installation](-installation)
-- [Usage](-usage)
-- [Configuration](-configuration)
-- [Script Reference](-script-reference)
-- [Troubleshooting](-troubleshooting)
-- [Examples](-examples)
-- [Contributing](-contributing)
-- [License](-license)
+### 🌐 Multi-Network Topologies
+| Network Type  | Supported | Configuration Example |
+|--------------|-----------|-----------------------|
+| Host-only    | ✅        | `base_ip: 192.168.99.0` |
+| NAT          | ✅        | `dhcp: true`           |
+| Internal     | ✅        | Custom VLAN tagging    |
+| Bridged      | ✅        | Physical NIC binding   |
 
-✨ Features
-
-- Multi-Network Topologies
-  - Host-only, NAT, Internal & Bridged networks
-  - YAML-defined network configurations
-- Infrastructure as Code
-  - CSV-based VM specifications
-  - Declarative provisioning
-- Automation Framework
-  - End-to-end provisioning pipeline
-  - Validation & health checks
-  - Comprehensive logging
-- Modular Design
-  - Reusable utility scripts
-  - Customizable workflows
-
-📂 Project Structure
-
-```
-my-project/
-├── configs/
-│   ├── network_config.yaml        Network definitions
-│   ├── vm_configs.csv             VM hardware specs
-│   └── vm_provisioning.csv        Software roles
-├── iso/                           OS images
-├── logs/                          Operation logs
-├── scripts/
-│   ├── 00_config.sh               Config loader
-│   ├── 01_create_vms.sh           VM creation
-│   ├── 02_install_os.sh           OS installation
-│   ├── 03_setup_networks.sh       Network config
-│   ├── 04_provision_vms.sh        Software setup
-│   ├── 05_validate.sh             Health checks
-│   └── utils/                     Helper scripts
-│       ├── checks.sh              Dependency validation
-│       ├── logging.sh             Logging system
-│       └── yaml.sh                YAML parser
-├── vms/                           Vms folder
-├── main.sh                        Main controller
-└── README.md                      This document
-└── USAGE.md                       Advanced usage
+### 🏗 Infrastructure as Code
+```csv
+# vm_configs.csv
+web-server,Ubuntu_64,4096,4,25600
+db-server,Ubuntu_64,2048,2,20480
 ```
 
-🛠️ Prerequisites
+### ⚡ Automation Framework
+```mermaid
+graph TD
+    A[Create VMs] --> B[Install OS]
+    B --> C[Configure Networks]
+    C --> D[Provision Software]
+    D --> E[Validate Setup]
+```
 
-- VirtualBox 7.0+
-- Bash 4.4+
-- `yq` (YAML processor)
-- SSH client
-- 10GB+ free disk space
+## 🏗️ Project Structure
+```
+virtualbox-automation/
+├── configs/               # YAML/CSV configurations
+│   ├── network_config.yaml
+│   ├── vm_configs.csv
+│   └── vm_provisioning.csv
+├── scripts/               # Modular automation
+│   ├── 00_*.sh           # Stage scripts
+│   └── utils/            # Helper modules
+├── iso/                  # OS installation media
+├── logs/                 # Timestamped operation logs
+└── vms/                  # VM storage directory
+```
 
+## ⚙️ Prerequisites
 ```bash
- Ubuntu/Debian setup
+# Ubuntu/Debian setup
 sudo apt update && sudo apt install -y \
     virtualbox \
     yq \
@@ -76,56 +65,29 @@ sudo apt update && sudo apt install -y \
     git
 ```
 
-📥 Installation
-
-1. Clone repository:
-
+## 🚀 Quick Start
+1. Clone and configure:
 ```bash
-git clone https://github.com/yourusername/virtualbox-automation.git
-cd virtualbox-automation
+git clone https://github.com/mohamedfawzizaki/vbox-lab-automation.git
+cd vbox-lab-automation
+cp configs/*.example.* configs/
 ```
 
-2. Install dependencies:
-
-```bash
-sudo scripts/utils/install_dependenies.sh
-```
-
-3. Configure environment:
-
-```bash
-cp configs/network_config.example.yaml configs/network_config.yaml
-cp configs/vm_configs.example.csv configs/vm_configs.csv
-```
-
-🚀 Usage
-
-Full Provisioning
-
+2. Full deployment:
 ```bash
 ./main.sh --all
 ```
 
-Individual Components
-
+3. Selective operations:
 ```bash
- Create VMs only
-./main.sh --create-vms
-
- Install OS on existing VMs
-./main.sh --install-os
-
- Configure networks
-./main.sh --networks
-
- Validate setup
-./scripts/05_validate.sh
+./main.sh --create-vms     # VM creation only
+./main.sh --networks       # Network config only
+./scripts/05_validate.sh   # Health checks
 ```
 
-🔧 Configuration
+## 🔧 Configuration
 
-Network Setup (`network_config.yaml`)
-
+### Network Setup (`network_config.yaml`)
 ```yaml
 networks:
   host_only:
@@ -133,129 +95,67 @@ networks:
     base_ip: 192.168.99.0
     netmask: 255.255.255.0
     dhcp: false
-    vms:
-      - web-server
-      - db-server
-
-  nat:
-    name: public-access
-    base_ip: 10.0.99.0/24
-    dhcp: true
-    vms:
-      - web-server
+    vms: [web-server, db-server]
 ```
 
-VM Specifications (`vm_configs.csv`)
-
+### VM Provisioning (`vm_provisioning.csv`)
 ```csv
- Format: name,ostype,memory(MB),cpus,storage(MB)
-web-server,Ubuntu_64,4096,4,25600
-db-server,Ubuntu_64,2048,2,20480
-```
-
-Provisioning Roles (`vm_provisioning.csv`)
-
-```csv
- Format: vm_name,ip,role
+# Format: vm_name,ip,role
 web-server,192.168.99.10,nginx
 db-server,192.168.99.20,mysql
 ```
 
-📜 Script Reference
+## 📜 Script Reference
+| Script | Purpose | Key Functions |
+|--------|---------|---------------|
+| `01_create_vms.sh` | VM creation | `create_vm()`, `attach_storage()` |
+| `03_setup_networks.sh` | Network config | `create_network()`, `attach_nic()` |
+| `utils/logging.sh` | Logging | `log_info()`, `log_error()` |
 
-Workflow Scripts
-
-`00_config.sh`  
- `01_create_vms.sh`  
- `02_install_os.sh`  
- `03_setup_networks.sh`
-`04_provision_vms.sh`
-`05_validate.sh`
-
-Utility Modules
-
-- checks.sh: Verifies dependencies and system state
-- logging.sh: Unified logging system with color output
-- yaml.sh: Advanced YAML parser with nesting support
-
-🚨 Troubleshooting
-
-Common Issues
-VM Creation Fails
-
+## 🚨 Troubleshooting
+**Common Issues:**
+1. VM Creation Fails:
 ```bash
- Check VirtualBox permissions
 sudo usermod -aG vboxusers $USER
-
- Verify available resources
 VBoxManage list systemproperties | grep "Memory"
 ```
 
-Network Connectivity Issues
-
+2. Network Issues:
 ```bash
- Reset network configurations
-./scripts/03_setup_networks.sh teardown
-./scripts/03_setup_networks.sh setup
-
- Validate NAT rules
-VBoxManage list natnets
+./scripts/03_setup_networks.sh teardown && ./scripts/03_setup_networks.sh setup
 ```
 
-YAML Parsing Errors
-
-```bash
- Validate configuration file
-yq eval configs/network_config.yaml
-
- Check for tabs (must use spaces)
-grep -P '\t' configs/network_config.yaml
-```
-
-🧩 Examples
-
-Web Application Stack
-
-```bash
- network_config.yaml
+## 🧩 Example Use Cases
+**Web Application Stack:**
+```yaml
+# network_config.yaml
 networks:
   host_only:
-    name: lab-network
-    base_ip: 192.168.99.0
-    netmask: 255.255.255.0
-    dhcp: false
-    vms:
-      - web-server
-      - db-server
-
-  nat:
-    name: public-access
-    base_ip: 10.0.99.0/24
-    dhcp: true
-    vms:
-      - web-server
-
- vm_provisioning.csv
-web-server,192.168.99.10,nginx
-db-server,192.168.99.20,mysql
+    name: app-network
+    base_ip: 192.168.77.0
+    vms: [frontend, backend]
 ```
 
-Development Environment
-
+**Development Environment:**
 ```bash
- Single VM setup
 ./main.sh --create-vms --networks
-
- Connect via SSH
-ssh developer@192.168.99.10 -p 2222
+ssh dev@192.168.99.10 -p 2222
 ```
 
-🤝 Contributing
+## 🤝 Contributing
+1. Fork the repository  
+2. Create your feature branch (`git checkout -b feature/improvement`)  
+3. Commit changes (`git commit -am 'Add new feature'`)  
+4. Push to branch (`git push origin feature/improvement`)  
+5. Open a Pull Request  
 
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/improvement`)
-3. Commit changes (`git commit -am 'Add new feature'`)
-4. Push to branch (`git push origin feature/improvement`)
-5. Open Pull Request
+## 📄 License
+MIT License - Copyright (c) 2025 [Mohamed Fawzi Zaki]
+```
 
-Maintained by: [Mohamed Fawzi zaki]
+## 📧 Contact
+
+Mohamed Fawzi Zaki - mohamedfawzizaki@gmail.com
+
+Project Link: [https://github.com/mohamedfawzizaki/vbox-lab-automation]
+```
